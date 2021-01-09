@@ -1,47 +1,51 @@
 from src.GraphInterface import GraphInterface
+from src.NodeData import NodeData
 
 
 class DiGraph(GraphInterface):
     """
-    This abstract class represents an interface of a graph.
+    This class represents a Directed Weighted Graph
     """
 
     def __init__(self):
+        self._nodes = {}
+        self._edges = {}
         self._mode_count = 0
         self._edge_size = 0
 
     def v_size(self) -> int:
         """
         Returns the number of vertices in this graph
+
         @return: The number of vertices in this graph
         """
-        pass
+        return self._nodes.__len__()
 
     def e_size(self) -> int:
         """
         Returns the number of edges in this graph
+
         @return: The number of edges in this graph
         """
-
-        pass
+        return self._edge_size
 
     def get_all_v(self) -> dict:
         """return a dictionary of all the nodes in the Graph, each node is represented using a pair
          (node_id, node_data)
         """
-        pass
+        return self._nodes
 
     def all_in_edges_of_node(self, id1: int) -> dict:
         """return a dictionary of all the nodes connected to (into) node_id ,
         each node is represented using a pair (other_node_id, weight)
          """
-        pass
+        return self._nodes.get(id1).get_incoming_neighbors()
 
     def all_out_edges_of_node(self, id1: int) -> dict:
         """return a dictionary of all the nodes connected from node_id , each node is represented using a pair
         (other_node_id, weight)
         """
-        pass
+        return self._nodes.get(id1).get_outgoing_neighbors()
 
     def get_mc(self) -> int:
         """
@@ -49,7 +53,7 @@ class DiGraph(GraphInterface):
         on every change in the graph state - the MC should be increased
         @return: The current version of this graph.
         """
-        pass
+        return self._mode_count
 
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
         """
@@ -72,7 +76,14 @@ class DiGraph(GraphInterface):
 
         Note: if the node id already exists the node will not be added
         """
-        pass
+        if self._nodes.__contains__(node_id):
+            return False
+        else:
+            tmp_node = NodeData(node_id)
+            self._nodes[node_id] = tmp_node
+            if pos is not None:
+                self._nodes.get(node_id).set_position(pos)
+            return True
 
     def remove_node(self, node_id: int) -> bool:
         """
