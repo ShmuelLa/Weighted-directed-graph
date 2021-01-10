@@ -1,6 +1,6 @@
 class NodeData:
 
-    def __init__(self, id: int):
+    def __init__(self, node_id: int):
         """
         The main node_data constructor. Creates a new node with the received ID
 
@@ -9,16 +9,21 @@ class NodeData:
         self._neighbors_out = {}
         self._neighbors_in = {}
         self._position = ()
-        self._key = id
+        self._key = node_id
         self._tag = -1.0
         self._info = ""
 
-    def connect_incoming_edge(self, id: int, weight: float):
-        self._neighbors_in[id] = weight
+    def connect_incoming_edge(self, node_id: int, weight: float):
+        self._neighbors_in[node_id] = weight
 
-    def connect_outgoing_eddge(self, id: int, weight: float):
-        self._neighbors_out[id] = weight
+    def connect_outgoing_edge(self, node_id: int, weight: float):
+        self._neighbors_out[node_id] = weight
 
+    def remove_incoming_edge(self, node_id: int):
+        self._neighbors_in.pop(node_id)
+
+    def remove_outgoing_edge(self, node_id: int):
+        self._neighbors_in.pop(node_id)
 
     def set_position(self, pos: tuple):
         """

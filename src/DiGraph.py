@@ -65,7 +65,9 @@ class DiGraph(GraphInterface):
 
         Note: If the edge already exists or one of the nodes dose not exists the functions will do nothing
         """
-        pass
+        self._nodes.get(id1).connect_outgoing_edge(id2, weight)
+        self._nodes.get(id2).connect_incoming_edge(id1, weight)
+        return True
 
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
         """
@@ -93,7 +95,8 @@ class DiGraph(GraphInterface):
 
         Note: if the node id does not exists the function will do nothing
         """
-        pass
+        self._nodes.pop(node_id)
+        return True
 
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
         """
@@ -104,4 +107,6 @@ class DiGraph(GraphInterface):
 
         Note: If such an edge does not exists the function will do nothing
         """
-        pass
+        self._nodes.get(node_id1).remove_outgoing_edge(node_id2)
+        self._nodes.get(node_id2).remove_incoming_edge(node_id1)
+        return True

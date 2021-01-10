@@ -21,6 +21,12 @@ class TestDiGraph(unittest.TestCase):
         self.assertEqual(g1.get_all_v().get(1).get_key(), 1)
         self.assertEqual(g1.get_all_v().__len__(), 1)
 
+    def test_remove_node(self):
+        g1 = DiGraph()
+        g1.add_node(1)
+        g1.remove_node(1)
+        self.assertEqual(g1.get_all_v().__len__(), 0)
+
 
 if __name__ == '__main__':
     unittest.main()
@@ -28,7 +34,3 @@ if __name__ == '__main__':
 node1 = NodeData(1)
 ttt = {1: node1, 2: "kssss"}
 t2 = {node1.get_key(): node1}
-print(t2.get(1).get_tag())
-print(t2.__len__())
-print(t2.__contains__(1))
-print(t2.__contains__(2))
