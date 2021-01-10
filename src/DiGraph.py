@@ -8,6 +8,9 @@ class DiGraph(GraphInterface):
     """
 
     def __init__(self):
+        """
+        The default DiGraph constructor
+        """
         self._nodes = {}
         self._edges = {}
         self._mode_count = 0
@@ -64,25 +67,32 @@ class DiGraph(GraphInterface):
         @return: True if the edge was added successfully, False o.w.
 
         Note: If the edge already exists or one of the nodes dose not exists the functions will do nothing
+        :rtype: object
         """
-        self._nodes.get(id1).connect_outgoing_edge(id2, weight)
-        self._nodes.get(id2).connect_incoming_edge(id1, weight)
-        return True
+        if id1 == id2 or weight < 0 or self._nodes.get(id1).has_neighbor(id2):
+            return False
+        elif self._nodes.__contains__(id1) and self._nodes.__contains__(id2):
+            self._nodes.get(id1).connect_outgoing_edge(id2, weight)
+            self._nodes.get(id2).connect_incoming_edge(id1, weight)
+            self._edge_size += 1
+            self._mode_count += 1
+            return True
 
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
         """
         Adds a node to the graph.
+        Note: if the node id already exists the node will not be added
+
         @param node_id: The node ID
         @param pos: The position of the node
         @return: True if the node was added successfully, False o.w.
-
-        Note: if the node id already exists the node will not be added
         """
         if self._nodes.__contains__(node_id):
             return False
         else:
             tmp_node = NodeData(node_id)
             self._nodes[node_id] = tmp_node
+            self._mode_count += 1
             if pos is not None:
                 self._nodes.get(node_id).set_position(pos)
             return True
@@ -95,8 +105,16 @@ class DiGraph(GraphInterface):
 
         Note: if the node id does not exists the function will do nothing
         """
-        self._nodes.pop(node_id)
-        return True
+        if self._nodes.__contains__(node_id):
+            for k, v in self.all_in_edges_of_node(node_id).keys():
+                self._nodes.get(node_id).remove_incoming_edge(k)
+                v.remove_outgoing_edge(k)
+                self._mode_count += 1
+                self._edge_size -= 1
+            self._nodes.pop(node_id)
+            return True
+        else:
+            return False
 
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
         """
@@ -107,6 +125,11 @@ class DiGraph(GraphInterface):
 
         Note: If such an edge does not exists the function will do nothing
         """
-        self._nodes.get(node_id1).remove_outgoing_edge(node_id2)
-        self._nodes.get(node_id2).remove_incoming_edge(node_id1)
-        return True
+        if node_id1 != node_id2 and self._nodes.__contains__(node_id1) and self._nodes.__contains__(node_id1):
+            self._nodes.get(node_id1).remove_outgoing_edge(node_id2)
+            self._nodes.get(node_id2).remove_incoming_edge(node_id1)
+            self._mode_count += 1
+            self._edge_size -= 1
+            return True
+        else:
+            return False

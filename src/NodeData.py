@@ -13,6 +13,9 @@ class NodeData:
         self._tag = -1.0
         self._info = ""
 
+    def has_neighbor(self, node_id: int) -> bool:
+        return self._neighbors_out.__contains__(node_id)
+
     def connect_incoming_edge(self, node_id: int, weight: float):
         self._neighbors_in[node_id] = weight
 
