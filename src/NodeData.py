@@ -23,10 +23,18 @@ class NodeData:
         self._neighbors_out[node_id] = weight
 
     def remove_incoming_edge(self, node_id: int):
-        self._neighbors_in.pop(node_id)
+        if self._neighbors_in.__contains__(node_id):
+            self._neighbors_in.pop(node_id)
+            return True
+        else:
+            return False
 
     def remove_outgoing_edge(self, node_id: int):
-        self._neighbors_in.pop(node_id)
+        if self._neighbors_in.__contains__(node_id):
+            self._neighbors_in.pop(node_id)
+            return True
+        else:
+            return False
 
     def set_position(self, pos: tuple):
         """

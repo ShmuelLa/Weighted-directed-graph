@@ -12,7 +12,6 @@ class DiGraph(GraphInterface):
         The default DiGraph constructor
         """
         self._nodes = {}
-        self._edges = {}
         self._mode_count = 0
         self._edge_size = 0
 
@@ -106,9 +105,14 @@ class DiGraph(GraphInterface):
         Note: if the node id does not exists the function will do nothing
         """
         if self._nodes.__contains__(node_id):
-            for k, v in self.all_in_edges_of_node(node_id).keys():
-                self._nodes.get(node_id).remove_incoming_edge(k)
-                v.remove_outgoing_edge(k)
+            for key_in in list(self.all_in_edges_of_node(node_id).keys()):
+                self._nodes.get(node_id).remove_incoming_edge(key_in)
+                self._nodes.get(key_in).remove_outgoing_edge(node_id)
+                self._mode_count += 1
+                self._edge_size -= 1
+            for key_out in list(self.all_out_edges_of_node(node_id).keys()):
+                self._nodes.get(key_out).remove_incoming_edge(node_id)
+                self._nodes.get(node_id).remove_outgoing_edge(key_out)
                 self._mode_count += 1
                 self._edge_size -= 1
             self._nodes.pop(node_id)
@@ -126,10 +130,12 @@ class DiGraph(GraphInterface):
         Note: If such an edge does not exists the function will do nothing
         """
         if node_id1 != node_id2 and self._nodes.__contains__(node_id1) and self._nodes.__contains__(node_id1):
-            self._nodes.get(node_id1).remove_outgoing_edge(node_id2)
-            self._nodes.get(node_id2).remove_incoming_edge(node_id1)
-            self._mode_count += 1
-            self._edge_size -= 1
-            return True
+            if self._nodes.get(node_id1).remove_outgoing_edge(node_id2) and \
+                    self._nodes.get(node_id2).remove_incoming_edge(node_id1):
+                self._mode_count += 1
+                self._edge_size -= 1
+                return True
+            else:
+                return False
         else:
             return False

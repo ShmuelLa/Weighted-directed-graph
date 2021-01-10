@@ -17,6 +17,30 @@ def main_test_graph():
 
 class TestDiGraph(unittest.TestCase):
 
+    def test_connections(self):
+        g1 = main_test_graph()
+        self.assertEqual(g1._nodes.get(1)._neighbors_out.get(3), 3)
+        self.assertEqual(g1._nodes.get(1)._neighbors_out.get(2), 3)
+        self.assertEqual(g1._nodes.get(3)._neighbors_out.get(5), 7)
+
+    def test_remove_edge(self):
+        g1 = main_test_graph()
+        self.assertEqual(g1.e_size(), 5)
+        g1.remove_edge(3, 5)
+        self.assertEqual(g1.e_size(), 4)
+        self.assertEqual(g1.v_size(), 5)
+        self.assertFalse(g1.remove_edge(3, 5))
+        self.assertFalse(g1.remove_edge(-20, 11))
+        self.assertEqual(g1.e_size(), 4)
+
+    def test_remove_node(self):
+        g1 = main_test_graph()
+        self.assertFalse(g1.remove_node(23))
+        self.assertFalse(g1.remove_node(-23))
+        self.assertTrue(g1.remove_node(3))
+        self.assertFalse(g1.remove_node(3))
+        self.assertEqual(g1.e_size(), 2)
+
     def test_node(self):
         node1 = NodeData(1)
         self.assertEqual(node1.get_key(), 1)
@@ -34,12 +58,6 @@ class TestDiGraph(unittest.TestCase):
         self.assertEqual(g1.get_all_v().__len__(), 1)
         g2 = main_test_graph()
         self.assertEqual(g2.v_size(), 5)
-
-    def test_remove_node(self):
-        g1 = DiGraph()
-        g1.add_node(1)
-        g1.remove_node(1)
-        self.assertEqual(g1.get_all_v().__len__(), 0)
 
     def test_add_edge(self):
         g1 = main_test_graph()
