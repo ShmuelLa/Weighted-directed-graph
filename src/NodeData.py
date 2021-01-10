@@ -1,3 +1,6 @@
+from json import JSONEncoder
+
+
 class NodeData:
 
     def __init__(self, node_id: int):
@@ -12,6 +15,18 @@ class NodeData:
         self._key = node_id
         self._tag = -1.0
         self._info = ""
+
+    def has_outgoing_edge(self, node1: int, weight: float) -> bool:
+        if self._neighbors_out.__contains__(node1):
+            return self._neighbors_out.get(node1) == weight
+        else:
+            return False
+
+    def has_incoming_edge(self, node1: int, weight: float) -> bool:
+        if self._neighbors_in.__contains__(node1):
+            return self._neighbors_in.get(node1) == weight
+        else:
+            return False
 
     def has_neighbor(self, node_id: int) -> bool:
         return self._neighbors_out.__contains__(node_id)
@@ -101,3 +116,6 @@ class NodeData:
         :return: Str representing this noe's data
         """
         return self._info
+
+    def __str__(self):
+        return "{\"id\":" + str(self._key) + "}"

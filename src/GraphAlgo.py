@@ -1,3 +1,5 @@
+import os
+from pathlib import Path
 from typing import List
 
 from src.GraphAlgoInterface import GraphAlgoInterface
@@ -29,7 +31,11 @@ class GraphAlgo(GraphAlgoInterface):
         @param file_name: The path to the out file
         @return: True if the save was successful, False o.w.
         """
-        pass
+        directory = os.getcwd()
+        full_path = os.path.dirname(directory) + "\\data\\Saved_Graphs\\" + file_name
+        with open(full_path, "w") as json_path:
+            print(self._graph.to_json(), file=json_path)
+        return True
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         """

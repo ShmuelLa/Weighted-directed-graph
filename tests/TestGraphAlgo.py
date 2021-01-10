@@ -1,5 +1,9 @@
 import unittest
-from src.DiGraph import DiGraph
+import json
+import os.path
+from pathlib import Path
+from src.NodeData import *
+from src.DiGraph import *
 from src.GraphAlgo import *
 
 
@@ -17,15 +21,24 @@ def main_test_graph():
 
 class TestDiGraph(unittest.TestCase):
 
-    def test_connections(self):
+    def test_save_load(self):
         g1 = main_test_graph()
-        self.assertEqual(g1._nodes.get(1)._neighbors_out.get(3), 3)
-        self.assertEqual(g1._nodes.get(1)._neighbors_out.get(2), 3)
-        self.assertEqual(g1._nodes.get(3)._neighbors_out.get(5), 7)
+        ga = GraphAlgo(g1)
+        ga.save_to_json("test1")
 
 
 if __name__ == '__main__':
     unittest.main()
+
+print(main_test_graph().to_json())
+directory = os.getcwd()
+full_path = os.path.dirname(directory)+"\\data\\Saved_Graphs\\1.json"
+print(full_path)
+# jsonstr = json.dumps(main_test_graph().__dict__)
+# print(jsonstr)
+# with open(path3, "w") as json_path:
+#      json.dump(jsjs, json_path)
+
 
 """
 package api;

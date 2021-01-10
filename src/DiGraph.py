@@ -1,5 +1,7 @@
+from json import JSONEncoder
 from src.GraphInterface import GraphInterface
 from src.NodeData import NodeData
+import json
 
 
 class DiGraph(GraphInterface):
@@ -139,3 +141,26 @@ class DiGraph(GraphInterface):
                 return False
         else:
             return False
+
+    def to_json(self):
+        nodes = "],\"Nodes\":["
+        edges = "{\"Edges\":["
+        for k, v in self._nodes.items():
+            nodes += "{\"id\":" + str(k) + "},"
+            for e, w in v.get_outgoing_neighbors().items():
+                edges += "{\"src\":" + str(k) + "," + "\"w\":" + str(w) + "," + "\"dest\":" + str(e) + "},"
+            for e, w in v.get_incoming_neighbors().items():
+                edges += "{\"src\":" + str(e) + "," + "\"w\":" + str(w) + "," + "\"dest\":" + str(k) + "},"
+        return edges[:-1] + nodes[:-1] + "]}"
+
+    def __eq__(self, other):
+        for node in self.get_all_v().keys():
+            if not other.get_all_v().__contains__(node):
+                return False
+            for out_node, out_weight in self.all_out_edges_of_node(node).items():
+                if not other.get_all_v().get(node).has_outgoing_edge(out_node, out_weight):
+                    return False
+            for in_node, in_weight in self.all_in_edges_of_node(node).items():
+                if not other.get_all_v().get(node).has_incoming_edge(in_node, in_weight):
+                    return False
+        return True

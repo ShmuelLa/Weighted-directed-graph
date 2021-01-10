@@ -77,7 +77,20 @@ class TestDiGraph(unittest.TestCase):
         self.assertEqual(g1.all_in_edges_of_node(1).__len__(), 1)
         self.assertEqual(g1.all_out_edges_of_node(1).__len__(), 2)
 
+    def test_equals(self):
+        g1 = main_test_graph()
+        g2 = main_test_graph()
+        self.assertEqual(g1, g2)
+        g2 = DiGraph()
+        for key in range(1, 6):
+            g2.add_node(key)
+        g2.add_edge(1, 2, 3)
+        g2.add_edge(1, 3, 3)
+        g2.add_edge(4, 1, 7)
+        g2.add_edge(3, 5, 7)
+        g2.add_edge(5, 3, 3)  # changes just the weight
+        self.assertNotEqual(g1, g2)
+
 
 if __name__ == '__main__':
     unittest.main()
-
