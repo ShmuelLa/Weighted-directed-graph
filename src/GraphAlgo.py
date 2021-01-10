@@ -23,7 +23,24 @@ class GraphAlgo(GraphAlgoInterface):
         @param file_name: The path to the json file
         @returns True if the loading was successful, False o.w.
         """
-        pass
+        try:
+            directory = os.getcwd()
+            full_path = os.path.dirname(directory) + "\\data\\Saved_Graphs\\" + file_name
+            result = DiGraph()
+            with open(full_path) as json_file:
+                data = json.load(json_file)
+            edges = data.get("Edges")
+            nodes = data.get("Nodes")
+            for node in nodes:
+                result.add_node(node.get("id"))
+            for edge in edges:
+                result.add_edge(edge.get("src"), edge.get("dest"), edge.get("w"))
+            self._graph = result
+            return True
+        except FileNotFoundError or FileExistsError or OSError:
+            print("Could not find/read file")
+            return False
+
 
     def save_to_json(self, file_name: str) -> bool:
         """
@@ -31,11 +48,16 @@ class GraphAlgo(GraphAlgoInterface):
         @param file_name: The path to the out file
         @return: True if the save was successful, False o.w.
         """
-        directory = os.getcwd()
-        full_path = os.path.dirname(directory) + "\\data\\Saved_Graphs\\" + file_name
-        with open(full_path, "w") as json_path:
-            print(self._graph.to_json(), file=json_path)
-        return True
+        try:
+            directory = os.getcwd()
+            full_path = os.path.dirname(directory) + "\\data\\Saved_Graphs\\" + file_name
+            with open(full_path, "w") as json_path:
+                print(self._graph.to_json(), file=json_path)
+            return True
+        except FileNotFoundError or FileExistsError or OSError:
+            print("Could not create file")
+            return False
+
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         """

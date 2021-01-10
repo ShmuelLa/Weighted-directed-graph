@@ -23,41 +23,20 @@ class TestDiGraph(unittest.TestCase):
 
     def test_save_load(self):
         g1 = main_test_graph()
-        ga = GraphAlgo(g1)
-        ga.save_to_json("test1")
+        ga1 = GraphAlgo(g1)
+        ga1.save_to_json("test1.json")
+        g2 = DiGraph()
+        ga2 = GraphAlgo(g2)
+        self.assertNotEqual(ga1.get_graph(), ga2.get_graph())
+        ga2.load_from_json("test1.json")
+        self.assertEqual(ga1.get_graph(), ga2.get_graph())
+        self.assertEqual(main_test_graph(), ga2.get_graph())
 
 
 if __name__ == '__main__':
     unittest.main()
 
-print(main_test_graph().to_json())
-directory = os.getcwd()
-full_path = os.path.dirname(directory)+"\\data\\Saved_Graphs\\1.json"
-print(full_path)
-# jsonstr = json.dumps(main_test_graph().__dict__)
-# print(jsonstr)
-# with open(path3, "w") as json_path:
-#      json.dump(jsjs, json_path)
-
-
 """
-package api;
-
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-class DWGraph_AlgoTest {
-
-    @Test
-    void copy() {
-    }
-
     @Test
     void isConnected() {
         directed_weighted_graph dg = DWGraph_DSTest.mainTestGraph();
