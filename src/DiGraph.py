@@ -16,6 +16,7 @@ class DiGraph(GraphInterface):
         self._nodes = {}
         self._mode_count = 0
         self._edge_size = 0
+        self.scc_solved = False
 
     def v_size(self) -> int:
         """
@@ -164,3 +165,10 @@ class DiGraph(GraphInterface):
                 if not other.get_all_v().get(node).has_incoming_edge(in_node, in_weight):
                     return False
         return True
+
+    def has_node(self, node: int) -> bool:
+        return self._nodes.__contains__(node)
+
+    def get_node(self, node: int) -> NodeData:
+        if self._nodes.__contains__(node):
+            return self._nodes.get(node)

@@ -2,9 +2,13 @@ import unittest
 import json
 import os.path
 from pathlib import Path
+import random
+
 from src.NodeData import *
 from src.DiGraph import *
+import heapq
 from src.GraphAlgo import *
+from queue import PriorityQueue
 
 
 def main_test_graph():
@@ -31,6 +35,68 @@ class TestDiGraph(unittest.TestCase):
         ga2.load_from_json("test1.json")
         self.assertEqual(ga1.get_graph(), ga2.get_graph())
         self.assertEqual(main_test_graph(), ga2.get_graph())
+
+    def test_heapq_lt_gt(self):
+        n1 = NodeData(1)
+        n2 = NodeData(2)
+        n3 = NodeData(3)
+        n4 = NodeData(4)
+        n5 = NodeData(5)
+        priority = []
+        n1.set_tag(-14.3)
+        n2.set_tag(0)
+        n3.set_tag(1)
+        n4.set_tag(4)
+        n5.set_tag(-100.1)
+        heapq.heappush(priority, n5)
+        heapq.heappush(priority, n3)
+        heapq.heappush(priority, n4)
+        heapq.heappush(priority, n2)
+        heapq.heappush(priority, n1)
+
+    def test_shortest_path(self):
+        g1 = main_test_graph()
+        ga1 = GraphAlgo(g1)
+        self.assertEqual(ga1.shortest_path(4, 5), (17, [4, 1, 3, 5]))
+        self.assertEqual(ga1.shortest_path(1, 5), (10, [1, 3, 5]))
+        self.assertEqual(ga1.shortest_path(1, 1), (float('inf'), []))
+        self.assertEqual(ga1.shortest_path(1, -11), (float('inf'), []))
+        self.assertEqual(ga1.shortest_path(80, -11), (float('inf'), []))
+
+    def test_scc(self):
+        g1 = main_test_graph()
+        ga = GraphAlgo(g1)
+        print(ga.connected_components())
+        ga.plot_graph()
+        ss = (1,2,3)
+        print(ss[1])
+
+    def test_gidi(self):
+        red = DiGraph()
+        for i in range(6):
+            red.add_node(i)
+        red.add_edge(0, 1, 4)
+        red.add_edge(2, 0, 1)
+        red.add_edge(1, 2, 5)
+        red.add_edge(2, 3, 6)
+        red.add_edge(3, 4, 8)
+        red.add_edge(2, 5, 2)
+        red.add_edge(0, 2, 5)
+        galred = GraphAlgo(red)
+        print(galred.connected_components())
+
+
+#      >>> from GraphAlgo import GraphAlgo
+#       >>> g_algo = GraphAlgo()
+#        >>> g_algo.addNode(0)
+#        >>> g_algo.addNode(1)
+#        >>> g_algo.addNode(2)
+#        >>> g_algo.addEdge(0,1,1)
+#        >>> g_algo.addEdge(1,2,4)
+#        >>> g_algo.shortestPath(0,1)
+#        (1, [0, 1])
+#        >>> g_algo.shortestPath(0,2)
+#        (5, [0, 1, 2])
 
 
 if __name__ == '__main__':

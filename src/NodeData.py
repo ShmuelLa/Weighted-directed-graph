@@ -1,5 +1,5 @@
 from json import JSONEncoder
-
+import random
 
 class NodeData:
 
@@ -15,6 +15,8 @@ class NodeData:
         self._key = node_id
         self._tag = -1.0
         self._info = ""
+        self.scc_index = -1
+        self.on_scc_stack = False
 
     def has_outgoing_edge(self, node1: int, weight: float) -> bool:
         if self._neighbors_out.__contains__(node1):
@@ -58,6 +60,12 @@ class NodeData:
         :param pos: tuple of the position in (x, y, z) format
         """
         self._position = pos
+
+    def rand_pos(self):
+        self._position = (random.random(), random.random(), 0)
+
+    def get_position(self) -> tuple:
+        return self._position
 
     def get_outgoing_neighbors(self) -> dict:
         """
@@ -119,3 +127,9 @@ class NodeData:
 
     def __str__(self):
         return "{\"id\":" + str(self._key) + "}"
+
+    def __lt__(self, other):
+        return self.get_tag() < other.get_tag()
+
+    def __gt__(self, other):
+        return self.get_tag() > other.get_tag()

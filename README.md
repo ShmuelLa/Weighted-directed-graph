@@ -107,29 +107,14 @@ Implemented in `mainTestGraph()` and `mainTestGraphAlg()` accordingly
 
 ## :memo: External articles and links used in the making of this project  
   
-### HashMap intel and efficiency:
-- https://javatutorial.net/java-iterate-hashmap-example
-- https://stackoverflow.com/questions/1757363/java-hashmap-performance-optimization-alternative
-- https://dzone.com/articles/how-to-use-java-hashmap-effectively
-- https://dzone.com/articles/hashmap-performance
-- https://stackoverflow.com/questions/55263115/detail-the-big-o-of-hashmap-put-method-by-real-code-in-java-8
-  
-### HashSet intel and efficiency:
-- https://stackoverflow.com/questions/3267572/fastest-data-structure-for-contains-in-java
-- https://www.baeldung.com/java-hashset-arraylist-contains-performance
-  
 ### Dijkstra's Algorithm
 - https://www.coursera.org/lecture/advanced-data-structures/core-dijkstras-algorithm-2ctyF
 - https://en.wikipedia.org/wiki/Shortest_path_problem
 
-### PriorityQueue and Comparable Usage
-- https://www.youtube.com/watch?v=c4ES6jGxqEw
+### Connected Components - Tarjan's
+- https://www.youtube.com/watch?v=wUgWX0nc4NY
 
-### Gson
-- https://github.com/google/gson
-- https://futurestud.io/tutorials/gson-getting-started-with-java-json-serialization-deserialization
-- https://www.youtube.com/watch?v=HSuVtkdej8Q
+### Matplotlib
+- https://matplotlib.org/3.3.3/gallery/text_labels_and_annotations/arrow_demo.html#sphx-glr-gallery-text-labels-and-annotations-arrow-demo-py
+- https://stackoverflow.com/questions/19633336/using-numbers-as-matplotlib-plot-markers
 
-### JFrame
-- https://www.youtube.com/watch?v=4T3WJEH7zrc
-- https://www.youtube.com/watch?v=Kmgo00avvEw
