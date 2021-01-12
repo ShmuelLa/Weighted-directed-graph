@@ -26,13 +26,15 @@ def main_test_graph():
 class TestDiGraph(unittest.TestCase):
 
     def test_save_load(self):
+        directory = os.getcwd()
+        full_path = os.path.dirname(directory) + "\\data\\Saved_Graphs\\test1.json"
         g1 = main_test_graph()
         ga1 = GraphAlgo(g1)
-        ga1.save_to_json("test1.json")
+        ga1.save_to_json(full_path)
         g2 = DiGraph()
         ga2 = GraphAlgo(g2)
         self.assertNotEqual(ga1.get_graph(), ga2.get_graph())
-        ga2.load_from_json("test1.json")
+        ga2.load_from_json(full_path)
         self.assertEqual(ga1.get_graph(), ga2.get_graph())
         self.assertEqual(main_test_graph(), ga2.get_graph())
 
@@ -69,7 +71,6 @@ class TestDiGraph(unittest.TestCase):
         print(ga.connected_components())
         ga.plot_graph()
 
-
     def test_gidi(self):
         red = DiGraph()
         for i in range(6):
@@ -83,6 +84,11 @@ class TestDiGraph(unittest.TestCase):
         red.add_edge(0, 2, 5)
         galred = GraphAlgo(red)
         print(galred.connected_components())
+
+    def test_single_scc(self):
+        g1 = main_test_graph()
+        ga = GraphAlgo(g1)
+
 
 
 #      >>> from GraphAlgo import GraphAlgo
