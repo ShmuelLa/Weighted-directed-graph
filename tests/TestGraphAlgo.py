@@ -80,14 +80,12 @@ class TestDiGraph(unittest.TestCase):
         g1 = main_test_graph()
         ga = GraphAlgo(g1)
 
-    def test_plot(self):
+    def test_big_scc(self):
         g1 = main_test_graph()
         ga = GraphAlgo(g1)
-        ga.load_from_json("..\data\Graphs_random_pos\G_100_800_2.json")
-        l1 = [1,2,3]
-        l2 = [2,3,4,5]
-        l3 = list(set(l1) & set(l2))
-        print(l3)
+        ga.load_from_json("..\data\Graphs_on_circle\G_30000_240000_1.json")
+        ga.connected_components()
+
 
 if __name__ == '__main__':
     unittest.main()
