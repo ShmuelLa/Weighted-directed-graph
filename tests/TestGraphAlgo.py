@@ -68,8 +68,7 @@ class TestDiGraph(unittest.TestCase):
         ga = GraphAlgo(g1)
         print(ga.connected_components())
         ga.plot_graph()
-        ss = (1,2,3)
-        print(ss[1])
+
 
     def test_gidi(self):
         red = DiGraph()

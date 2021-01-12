@@ -1,3 +1,4 @@
+import math
 import os
 from collections import deque
 import random
@@ -11,8 +12,19 @@ from src.DiGraph import *
 from matplotlib import pyplot as plt
 import numpy as np
 
+
+def generate_axis_positions(radius, nodes):
+    distance = 2 * np.pi / nodes
+    list_of_points = []
+    for pos in range(0, nodes):
+        list_of_points.append(
+            (radius * np.cos(pos * distance), radius * np.sin(pos * distance), 0))
+    return list_of_points
+
+
 class GraphAlgo(GraphAlgoInterface):
     _scc_count = 0
+    _positions = []
 
     def __init__(self, graph: DiGraph):
         self._graph = graph
@@ -175,15 +187,15 @@ class GraphAlgo(GraphAlgoInterface):
         Otherwise, they will be placed in a random but elegant manner.
         @return: None
         """
-        arrow_parameters = {'length_includes_head': True, 'head_width': 0.01, 'head_length': 0.03, 'shape': 'full',
+        arrow_parameters = {'length_includes_head': True, 'head_width': 0.040, 'head_length': 0.07, 'shape': 'full',
                             'fc': 'k', 'ec': None, 'alpha': 0.7}
+        self._positions = generate_axis_positions(1, self._graph.v_size())
         for node in self._graph.get_all_v().values():
             if node.get_position() == ():
-                node.rand_pos()
+                node.set_position(self._positions.pop())
         for node in self._graph.get_all_v().values():
             x = node.get_position()[0]
             y = node.get_position()[1]
-            print(x, y)
             plt.plot(x, y, '-o')
             plt.annotate(str(node.get_key()), [x, y+0.025])
             for ni in self._graph.all_out_edges_of_node(node.get_key()).keys():
