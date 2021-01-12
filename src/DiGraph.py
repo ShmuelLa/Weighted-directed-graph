@@ -16,7 +16,6 @@ class DiGraph(GraphInterface):
         self._nodes = {}
         self._mode_count = 0
         self._edge_size = 0
-        self.scc_solved = False
 
     def v_size(self) -> int:
         """
