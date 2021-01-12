@@ -17,6 +17,8 @@ def generate_axis_positions(radius, nodes) -> list:
     :param nodes: The number of nodes on the graph
     :return: a list containing the positions
     """
+    if nodes == 0:
+        return []
     distance = 2 * np.pi / nodes
     list_of_points = []
     for pos in range(0, nodes):
@@ -29,7 +31,6 @@ class GraphAlgo(GraphAlgoInterface):
     """
     This class implements directed weighted graph algorithms including SCC and plotting
     """
-    _scc_count = 0
     _positions = []
 
     def __init__(self, graph: DiGraph):
@@ -68,7 +69,7 @@ class GraphAlgo(GraphAlgoInterface):
             self._graph = result
             return True
         except FileNotFoundError or FileExistsError or OSError:
-            print("Could not find/read file")
+            print("Could not find/read file (Check if you inserted full path)")
             return False
 
     def save_to_json(self, file_name: str) -> bool:
@@ -131,6 +132,44 @@ class GraphAlgo(GraphAlgoInterface):
         self.reset_graph()
         return result_distance, result
 
+    def bfs(self, node: int) -> list:
+        queue = deque()
+        tmp_node = node
+        first_list = []
+        reversed_list = []
+        queue.append(tmp_node)
+        self._graph.get_node(tmp_node).set_info("y")
+        while queue.__len__() > 0:
+            tmp_node = queue.pop()
+            for ni in self._graph.all_out_edges_of_node(tmp_node).keys():
+                if self._graph.get_node(ni).get_info() != "y":
+                    self._graph.get_node(ni).set_info("y")
+                    queue.append(ni)
+        reversed_graph = DiGraph()
+        for key, nd in self._graph.get_all_v().items():
+            if nd.get_info() == "y":
+                first_list.append(nd.get_key())
+            reversed_graph.add_node(key)
+        for nd in self._graph.get_all_v().keys():
+            for k, w in self._graph.all_out_edges_of_node(nd).items():
+                reversed_graph.add_edge(k, nd, w)
+        queue.clear()
+        tmp_node = node
+        queue.append(tmp_node)
+        reversed_graph.get_node(tmp_node).set_info("y")
+        while queue.__len__() > 0:
+            tmp_node = queue.pop()
+            for ni in reversed_graph.all_out_edges_of_node(tmp_node).keys():
+                if reversed_graph.get_node(ni).get_info() != "y":
+                    reversed_graph.get_node(ni).set_info("y")
+                    queue.append(ni)
+        for key, nd in reversed_graph.get_all_v().items():
+            if nd.get_info() == "y":
+                reversed_list.append(key)
+        result = list(set(first_list) & set(reversed_list))
+        self.reset_graph()
+        return result
+
     def connected_component(self, id1: int) -> list:
         """
         Finds the Strongly Connected Component(SCC) that node id1 is a part of.
@@ -144,7 +183,7 @@ class GraphAlgo(GraphAlgoInterface):
         stack = deque()
         single_component = {}
         result = []
-        self.dfs(id1, stack, single_component)
+        self.bfs(id1)
         for value in single_component.values():
             result.append(value)
         self.reset_graph()
@@ -159,52 +198,16 @@ class GraphAlgo(GraphAlgoInterface):
         """
         if self._graph is None:
             return []
-        stack = deque()
-        single_component = {}
+        self.scc_stack_reset()
         result = []
-        for node in self._graph.get_all_v().values():
-            if node.scc_index == -1:
-                self.dfs(node, stack, single_component)
-        for value in single_component.values():
-            result.append(value)
+        for key, node in self._graph.get_all_v().items():
+            if not node.on_scc_stack:
+                tmp_lst = self.bfs(key)
+                result.append(tmp_lst)
+                for n in tmp_lst:
+                    self._graph.get_node(n).on_scc_stack = True
         self.reset_graph()
         return result
-
-    def dfs(self, node: NodeData, stack: deque, single_component: {}) -> None:
-        """
-        Main dfs from Tarjan's algorithm to map the SCC's on the graph.
-        This algorithm goes through the graph recursively and marks the lowlink values of
-        each and every node of a single component. Upon finishing this algorithm changes the
-        single_component dict with the nodes of this current SCC
-
-        :param node: The node ID to start at
-        :param stack: a Stack of the former nodes (if any)
-        :param single_component: Dict of the result SCC to be filled inside recursion
-        :return: None
-        """
-        stack.append(node)
-        node.set_info("y")
-        node.scc_index = self._scc_count
-        node.set_tag(self._scc_count)
-        self._scc_count += 1
-        for curr_node in self.get_graph().all_out_edges_of_node(node.get_key()).keys():
-            tmp_node = self._graph.get_node(curr_node)
-            if tmp_node.scc_index == -1:
-                self.dfs(tmp_node, stack, single_component)
-                node.set_tag(min(node.get_tag(), tmp_node.get_tag()))
-            elif tmp_node.get_info() == "y":
-                node.set_tag(min(node.get_tag(), tmp_node.scc_index))
-        if node.get_tag() == node.scc_index:
-            node_index = float("-inf")
-            while node_index != node.get_key():
-                tmp_node = stack.pop()
-                node_index = tmp_node.get_key()
-                if node.get_tag() not in single_component:
-                    single_component[node.get_tag()] = []
-                    single_component[node.get_tag()].append(tmp_node.get_key())
-                else:
-                    single_component[node.get_tag()].append(tmp_node.get_key())
-                tmp_node.set_info("")
 
     def plot_graph(self) -> None:
         """
@@ -239,10 +242,12 @@ class GraphAlgo(GraphAlgoInterface):
         """
         resets the state of the graph for algorithmic use
         """
-        _scc_count = 0
         for node in self._graph.get_all_v().values():
             if node.get_tag() != -1 or node.get_info() != "":
                 node.set_tag(-1)
                 node.set_info("")
-                node.on_scc_stack = False
                 node.scc_index = -1
+
+    def scc_stack_reset(self):
+        for node in self._graph.get_all_v().values():
+            node.on_scc_stack = False
