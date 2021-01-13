@@ -62,7 +62,11 @@ class GraphAlgo(GraphAlgoInterface):
             edges = data.get("Edges")
             nodes = data.get("Nodes")
             for node in nodes:
-                result.add_node(node.get("id"))
+                if "pos" in node:
+                    pos = tuple(float(i) for i in node.get("pos").strip("()").split(","))
+                    result.add_node(node.get("id"), pos)
+                else:
+                    result.add_node(node.get("id"))
             for edge in edges:
                 result.add_edge(edge.get("src"), edge.get("dest"), edge.get("w"))
             self._graph = result

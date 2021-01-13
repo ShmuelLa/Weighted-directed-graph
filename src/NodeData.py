@@ -61,10 +61,12 @@ class NodeData:
         """
         self._position = pos
 
-    def rand_pos(self):
-        self._position = (random.random(), random.random(), 0)
-
     def get_position(self) -> tuple:
+        """
+        Returns this nodes position value's
+
+        :return: (x,y,x) tuple
+        """
         return self._position
 
     def get_outgoing_neighbors(self) -> dict:
@@ -126,7 +128,17 @@ class NodeData:
         return self._info
 
     def __str__(self):
-        return "{\"id\":" + str(self._key) + "}"
+        """
+        turns the note to string in json format:
+        example - {"pos":"0.9420675020620758,0.7598820416652761,0.0","id":7}
+
+        :return:
+        """
+        if self._position == ():
+            return "{\"id\":" + str(self._key) + "}"
+        else:
+            return "{\"pos\":\"" + str(self._position[0]) + "," + str(self._position[1]) + ","\
+                   + str(self._position[2]) + "\"," + "\"id\":" + str(self._key) + "}"
 
     def __lt__(self, other):
         return self.get_tag() < other.get_tag()

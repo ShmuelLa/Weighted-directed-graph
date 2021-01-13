@@ -146,7 +146,11 @@ class DiGraph(GraphInterface):
         nodes = "],\"Nodes\":["
         edges = "{\"Edges\":["
         for k, v in self._nodes.items():
-            nodes += "{\"id\":" + str(k) + "},"
+            if v.get_position() == ():
+                nodes += "{\"id\":" + str(k) + "},"
+            else:
+                nodes += "{\"pos\":\"" + str(self._position[0]) + "," + str(self._position[1]) + ","\
+                   + str(self._position[2]) + "\"," + "\"id\":" + str(self._key) + "},"
             for e, w in v.get_outgoing_neighbors().items():
                 edges += "{\"src\":" + str(k) + "," + "\"w\":" + str(w) + "," + "\"dest\":" + str(e) + "},"
             for e, w in v.get_incoming_neighbors().items():
@@ -154,8 +158,11 @@ class DiGraph(GraphInterface):
         return edges[:-1] + nodes[:-1] + "]}"
 
     def __eq__(self, other):
-        for node in self.get_all_v().keys():
-            if not other.get_all_v().__contains__(node):
+        for node, node_obj in self.get_all_v().items():
+            if other.get_all_v().__contains__(node):
+                if str(other.get_node(node)) != str(node_obj):
+                    return False
+            elif not other.get_all_v().__contains__(node):
                 return False
             for out_node, out_weight in self.all_out_edges_of_node(node).items():
                 if not other.get_all_v().get(node).has_outgoing_edge(out_node, out_weight):
