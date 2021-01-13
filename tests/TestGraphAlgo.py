@@ -79,6 +79,7 @@ class TestDiGraph(unittest.TestCase):
     def test_single_scc(self):
         g1 = main_test_graph()
         ga = GraphAlgo(g1)
+        dic = {}
 
     def test_big_scc(self):
         g1 = main_test_graph()

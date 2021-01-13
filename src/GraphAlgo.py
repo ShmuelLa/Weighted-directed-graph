@@ -32,7 +32,7 @@ class GraphAlgo(GraphAlgoInterface):
     """
     _positions = []
 
-    def __init__(self, graph: DiGraph):
+    def __init__(self, graph: DiGraph = None):
         """
         The graph algo constructor
 
@@ -140,6 +140,8 @@ class GraphAlgo(GraphAlgoInterface):
         self._graph.get_node(tmp_node).set_info("y")
         while queue.__len__() > 0:
             tmp_node = queue.pop()
+            # if self._graph.all_out_edges_of_node(tmp_node) == {}:
+            #     return [tmp_node]
             for ni in self._graph.all_out_edges_of_node(tmp_node).keys():
                 if self._graph.get_node(ni).get_info() != "y":
                     self._graph.get_node(ni).set_info("y")
@@ -158,6 +160,8 @@ class GraphAlgo(GraphAlgoInterface):
         reversed_graph.get_node(tmp_node).set_info("y")
         while queue.__len__() > 0:
             tmp_node = queue.pop()
+            # if reversed_graph.all_out_edges_of_node(tmp_node) == {}:
+            #     return [tmp_node]
             for ni in reversed_graph.all_out_edges_of_node(tmp_node).keys():
                 if reversed_graph.get_node(ni).get_info() != "y":
                     reversed_graph.get_node(ni).set_info("y")
@@ -179,14 +183,7 @@ class GraphAlgo(GraphAlgoInterface):
         """
         if not self._graph.get_node(id1) or self._graph.v_size() <= 1 or self._graph is None:
             return []
-        stack = deque()
-        single_component = {}
-        result = []
-        self.bfs(id1)
-        for value in single_component.values():
-            result.append(value)
-        self.reset_graph()
-        return result
+        return self.bfs(id1)
 
     def connected_components(self) -> List[list]:
         """
