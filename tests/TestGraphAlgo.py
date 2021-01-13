@@ -1,6 +1,7 @@
 import unittest
 import os.path
 from src.GraphAlgo import *
+import time
 
 
 def main_test_graph():
@@ -75,11 +76,13 @@ class TestDiGraph(unittest.TestCase):
         red.add_edge(0, 2, 5)
         galred = GraphAlgo(red)
         print(galred.connected_components())
+        print(galred.gidi2())
 
     def test_single_scc(self):
         g1 = main_test_graph()
         ga = GraphAlgo(g1)
-        dic = {}
+        self.assertEqual(ga.connected_component(1), [1])
+        self.assertEqual(ga.connected_component(3), [3, 5] or [5, 3])
 
     def test_big_scc(self):
         g1 = main_test_graph()
@@ -90,3 +93,4 @@ class TestDiGraph(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+

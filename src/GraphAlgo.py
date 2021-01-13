@@ -138,10 +138,10 @@ class GraphAlgo(GraphAlgoInterface):
         reversed_list = []
         queue.append(tmp_node)
         self._graph.get_node(tmp_node).set_info("y")
+        if self._graph.all_out_edges_of_node(tmp_node) == {} or self._graph.all_in_edges_of_node(tmp_node) == {}:
+            return [tmp_node]
         while queue.__len__() > 0:
             tmp_node = queue.pop()
-            # if self._graph.all_out_edges_of_node(tmp_node) == {}:
-            #     return [tmp_node]
             for ni in self._graph.all_out_edges_of_node(tmp_node).keys():
                 if self._graph.get_node(ni).get_info() != "y":
                     self._graph.get_node(ni).set_info("y")
@@ -160,8 +160,6 @@ class GraphAlgo(GraphAlgoInterface):
         reversed_graph.get_node(tmp_node).set_info("y")
         while queue.__len__() > 0:
             tmp_node = queue.pop()
-            # if reversed_graph.all_out_edges_of_node(tmp_node) == {}:
-            #     return [tmp_node]
             for ni in reversed_graph.all_out_edges_of_node(tmp_node).keys():
                 if reversed_graph.get_node(ni).get_info() != "y":
                     reversed_graph.get_node(ni).set_info("y")
@@ -247,3 +245,64 @@ class GraphAlgo(GraphAlgoInterface):
     def scc_stack_reset(self):
         for node in self._graph.get_all_v().values():
             node.on_scc_stack = False
+
+    def gidi1(self, id1: int) -> list:
+
+        visited = []
+        normal, lst, reverse = [], [], []
+
+        self.my_cp(id1, visited, normal)
+        visited = []
+        r_g = self.transpose()
+        r_g.my_cp(id1, visited, reverse)
+
+        if len(reverse) > len(normal):
+            for j in normal:
+                if reverse._contains_(j):
+                    lst.append(j)
+        else:
+            for j in reverse:
+                if normal._contains_(j):
+                    lst.append(j)
+
+        return lst
+
+    def gidi2(self) -> List[list]:
+
+        visited = []
+        lst = []
+        for i in self.get_graph().get_all_v():
+            if i not in visited:
+                temp = self.connected_component(i)
+                lst.append(temp)
+                visited.extend(temp)
+        return lst
+
+    def my_cp(self, key: int, visited: list, ans: list) -> List:
+        ans.append(key)
+        visited.append(key)
+        keys = [key]
+        while keys:
+            for j in keys:
+                keys.remove(j)
+                adj = self.get_graph().all_out_edges_of_node(j)
+                for i in adj:
+                    if i not in visited:
+                        keys.append(i)
+                        visited.append(i)
+                        ans.append(i)
+        return ans
+
+    def transpose(self) -> DiGraph:
+        trans = DiGraph()
+
+        for i in self.get_graph().get_all_v():
+            node = self.get_graph().get_all_v()[i]
+            trans.add_node(i)
+            for j in node.getNei():
+                trans.add_node(j)
+                trans.add_edge(j, i, node.getNei()[j])
+
+        temp = GraphAlgo(trans)
+        ans = temp
+        return ans
