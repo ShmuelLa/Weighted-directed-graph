@@ -20,8 +20,9 @@ In **Comparisons** we run 6 different graphs from the `data/Graphs_on_circle` fo
 - `Networkx`: https://networkx.org/documentation/stable/tutorial.html
 - Our former `Ex2 Java` project: https://github.com/ShmuelLa/OOP_ex2
 - This repositor 
-
 Because the running time on the small graphs in too small we compared the projects on the biggest graph - `G_30000_240000`
+
+> all the tests were run on an intel i7-8565U with 16GB of ram
 
 ## Main Algorithms Used
 
