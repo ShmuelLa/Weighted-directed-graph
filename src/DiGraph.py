@@ -48,7 +48,10 @@ class DiGraph(GraphInterface):
         """return a dictionary of all the nodes connected from node_id , each node is represented using a pair
         (other_node_id, weight)
         """
-        return self._nodes.get(id1).get_outgoing_neighbors()
+        if self._nodes.__contains__(id1):
+            return self._nodes.get(id1).get_outgoing_neighbors()
+        else:
+            return {}
 
     def get_mc(self) -> int:
         """
