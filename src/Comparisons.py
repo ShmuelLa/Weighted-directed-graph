@@ -236,9 +236,9 @@ def test_time6():
 
 def plot_results():
     labels = ['Shortest Path', 'Connected Components']
-    java = [0.2, 0.3]
-    python = [1.544, 1.11]
-    networkx = [0, 0.9]
+    java = [1.983, 1.819]
+    python = [2.276, 1.980]
+    networkx = [0, 0.941]
     x = np.arange(len(labels))
     width = 0.2
     fig, ax = plt.subplots()
