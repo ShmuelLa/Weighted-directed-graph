@@ -1,4 +1,4 @@
-![alt text](resources/datavis.gif)
+![alt text](resources/logo.gif)
 
 # :mortar_board: Weighted Directed Graph Python Implementation
 
@@ -31,7 +31,7 @@ An SCC is a component in a graph that contains noded which can reach each other 
 For our SCC algorithm we used a former BFS we used in the previous exam which runs from a node to all of it's neighbors, transposes the graph and checks the directions again.
 This time we added a feature to the result of that algorithm that will return the intersection of the two paths the BFS went through.
 Than we wrote another function which calss the BFS algorithm for each and every "unvisited"  node (Means that the node itself still doesn't have an SCC).   
->> Note: at firsts we implemented and used Tarjan's algorithm with recursive DFS but because of the big graphs we needed to run we reached max recursion depth and after increasing it we reached a Stack Overflow error. so we used a more "simple" algorithm
+> Note: at firsts we implemented and used Tarjan's algorithm with recursive DFS but because of the big graphs we needed to run we reached max recursion depth and after increasing it we reached a Stack Overflow error. so we used a more "simple" algorithm
 
 ### Dijkstra Algorithm:
 A searching algorithm. in this version of Dijkstra we use a Priority que, that is because we are "traveling" across a Weighted
