@@ -19,7 +19,7 @@ of our `getV()` methods which are used in almost every algorithm and iteration i
   
 ## :computer: Main Classes and Methods  
   
-### :chart_with_upwards_trend: WGraph_DS
+### :chart_with_upwards_trend: DiGraph
 This class implements a mathematical weighted graph by implements two classes internally
  :one: **NodeInfo** which implements the basic information and methods each node stores
  :two: **EdgeInfo** which stores all the data and methods for all the edges in the graph. This internal class 
@@ -29,78 +29,72 @@ This class implements a mathematical weighted graph by implements two classes in
 
 | **Methods**      |    **Details**        | **Complexity** |
 |-----------------|-----------------------|----------------|
-| `WGraph_DS()` | Default constructor     |
-| `getNode()` | Returns a node by the nodeKey |
-| `hasEdge()` | Checks is two nodes are connected | O(1) |
-| `getEdge()` | Returns the weight of an edge between two nodes | O(1) |
+| `__init__` | Initialization of a new Directed graph     |O(1)
+| `v_size()` | Returns the amount of nodes in the graph |O(1)
+| `e_size()` | Returns the amount of edges in the graph | O(1) |
+| `get_all_v()` | Returns a dictionary of all the nodes| O(1) |
 | `addNode()` | Adds a new node to the graph | O(1) |
-| `connect()` | Connects two nodes in the graph | O(1) |
-| `getV()` | Returns a collection view of the graph | O(1) |
-| `getV(int node_id)` | Returns a collection view of the graph | O(1), Originally O(k). k=node degree |
+| `add_edge()` | Connects two nodes in the graph | O(1) |
+| `all_in_edges_of_node()` | Returns a dictionary representing the ingoing edges from the node | O(1) |
+| `all_out_edges_of_node` | Returns a dictionary representing the outgoing edges from the node | O(1), Originally O(k). k=node degree |
+| `get_mc()` | Returns the amount of changes made to the graph | O(1) |
 | `removeNode()` | Removed a node from the graph | O(n) |
 | `removeEdge()` | Remove an edge between two nodes in the graph | O(1) |
-| `nodeSize()` | Returns the number of the nodes in the graph | O(1) |
-| `edgeSize()` | Returns the number of the edges in the graph | O(1) |
-| `getMC()` | Returns the number of mode counts in the graph, Every change in the internal state of the graph counts as a mode count | O(1) |
-| `equals()` | Compares two graphs and cheks if they are equal |
-| `toString()` | Creates a String representing the graph, adds each and every connection |
+| `to_json()` | Returns a String that represents the graph, in JSON format | O(1) |
+| `__eq__()` | Check if two given graphs are equals | O(n) |
+| `has_node()` | Check if a given node is inside a graph | O(1) |
+| `__str__()` | Returns a String that represents the graph | O(1) |
+
 
  > :lock: NodeInfo and EdgeInfo classes are internal and cannot be accessed directly, 
 >used only for developing
 
-##### NodeInfo
+##### NodeData
 
 | **Methods**      |    **Details**        |
 |-----------------|-----------------------|
-| `NodeInfo()` | Constructs a new node with the given key |
+| `__init__()` | Initialization of a new NodeData  |
+| `has_outgoing_edge()` | Checks if a node has an outgoing edge with a given value |
+| `has_incoming_edge()` | Checks if a node has an incoming edge with a given value |
+| `has_neighbor()` | Checks if the node has an edge with a given node |
+| `connect_incoming_edge()` | Connects a the incoming edge with a given node and value |
+| `connect_outgoing_edge()` | Connects a the outgoing edge with a given node and value |
+| `remove_incoming_edge()` | Removes a the outgoing edge with a given node |
+| `remove_outgoing_edge()` | Removes a the outgoing edge with a given node  |
+| `set_position()` | Sets a given position to the node   |
+| `get_position()` | Returns the node's position  |
+| `get_outgoing_neighbors()` | Returns a dict containing all of the outgoing edges of a node|
+| `get_incoming_neighbors()` | Returns a dict containing all of the ingoing edges of a node  |
+| `__str__()` | Returns a String representing the Node, in JSON format |
+| `__lt__()` | Compare two nodes buy their tag |
+| `__gt__()` | Compare two nodes buy their tag |
 | `getKey()` | Returns the nodes key |
 | `getInfo()` | Returns the nodes String metadata |
 | `setInfo()` | Sets the nodes String metadata |
 | `getTag()` | Returns the nodes double tag |
 | `setTag()` | Sets the nodes double tag |
-| `compareTo()` | Compares two nodes by the tag, chooses lowest |
-| `toString()` | creates a String representing the node's detail, used for comparison |
-| `equals()` | Compares two nodes and checks if are equal |
+| `__repr__()` | Returns a String representing the Node |
 
-##### EdgeInfo
-
-| **Methods**    |    **Details**             |
-|----------------|----------------------------|
-| `EdgeInfo()` | The EdgeInfo constructor |
-| `setWeight()` | Sets the weight between two nodes in a single direction |
-| `connectE()` | Connects an edge between two nodes in a single direction |
-| `hasNi()` | Checks if a selected node has the received neighbor node |
-| `getNi()` | Returns a Collection representing the neighbors of a node |
-| `getW()` | Returns the weight of an edge between two nodes |
-| `removeSrc()` | Clears the data structure containing all the nodes connections |
-| `getNiSize()` | Returns the neighbor count of a specific node |
-| `removeEd()` | Removes and edge between two nodes in a single direction |
- 
 ### :bar_chart: Graph_Algo
 
 | **Method**      |    **Details** |
 |-----------------|--------------|
-| `init()`         | Initialize the graph |
-| `copy()`        | Creates a deep copy of the graph |
+| `__init__()`         | Initialize the graph |
+| `load_from_json()`        | Loads a graph from a given JSON file path |
+| `save_from_json()`        | Saves a graph to a given JSON file path |
 | `getGraph()` | Returns a pointer to the initialized graph |
-| `isConnected()` | Checks if the graph is connected |
-| `shortestPathDist()` | Returns the length of te shortest path between two node, if non existent returns -1 |
-| `shortestPath()` | Returns a List<node_data> of the shortest path between two nodes, if non existent returns null |
-| `save()` | Saves a graph to a file via Serialization |
-| `load()` | Loads a graph from a file via Deserialization |
+| `connected_components()` | Returns all of the SCC(Strongly Connected Component) that exists in the graph   |
+| `connected_component()` | Return the SCC(Strongly Connected Component) of a given node in the graph as a list |
+| `shortestPath()` | Returns the Wight of the path and a list containing all nodes in the path between two given nodes |
 | `reset()` | Rests the graph's tag and metadata after running an algorithm |
+| `plot_graph()` | Plots the graph using Matplotlib |
 
 ## :mag: Tests
 
-In this project we invested extensively in testing our implementation. 
-We created a test for each and every complex and simple method in this project.
+With TestDiGraph we made a couple of scenarios, we tested to all of our methods and algorithms.
+Including Dijkstra, BFS. We ran run time tests, with our previous project in Java, and Networkx.
 
-The tests rely on two main mechanisms:
-- a `graph_creator()` method we build that creates a graph with the set amount 
-of nodes and edges while randomizing their connections
-- a complex and unique graph build in advanced that we researched it behavior and take advantage 
-of that in order to test complex algorithms like BFS and Dijkstra's. 
-Implemented in `mainTestGraph()` and `mainTestGraphAlg()` accordingly
+
 
 ### Main Graph Built for Testing
 ![alt text](resources/WikiPictures/testgraph.jpg)
