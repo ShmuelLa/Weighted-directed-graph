@@ -115,12 +115,10 @@ class DiGraph(GraphInterface):
             for key_in in list(self.all_in_edges_of_node(node_id).keys()):
                 self._nodes.get(node_id).remove_incoming_edge(key_in)
                 self._nodes.get(key_in).remove_outgoing_edge(node_id)
-                self._mode_count += 1
                 self._edge_size -= 1
             for key_out in list(self.all_out_edges_of_node(node_id).keys()):
                 self._nodes.get(key_out).remove_incoming_edge(node_id)
                 self._nodes.get(node_id).remove_outgoing_edge(key_out)
-                self._mode_count += 1
                 self._edge_size -= 1
             self._nodes.pop(node_id)
             self._mode_count += 1
