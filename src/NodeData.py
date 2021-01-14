@@ -92,8 +92,8 @@ class NodeData:
         :param node_id: the node to remove
         :return: True is successful False otherwise
         """
-        if self._neighbors_in.__contains__(node_id):
-            self._neighbors_in.pop(node_id)
+        if self._neighbors_out.__contains__(node_id):
+            self._neighbors_out.pop(node_id)
             return True
         else:
             return False
