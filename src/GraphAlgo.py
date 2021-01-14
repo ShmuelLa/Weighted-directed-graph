@@ -1,7 +1,11 @@
 import json
 from collections import deque
+from math import sqrt
 from typing import List
 import heapq
+
+from matplotlib.patches import ConnectionPatch
+
 from src.GraphAlgoInterface import GraphAlgoInterface
 from src.DiGraph import *
 from matplotlib import pyplot as plt
@@ -216,8 +220,7 @@ class GraphAlgo(GraphAlgoInterface):
 
         @return: None
         """
-        arrow_parameters = {'length_includes_head': True, 'head_width': 0.040, 'head_length': 0.07, 'shape': 'full',
-                            'fc': 'k', 'ec': None, 'alpha': 0.7}
+        fig, ax = plt.subplots(figsize=(10, 8))
         self._positions = generate_axis_positions(1, self._graph.v_size())
         for node in self._graph.get_all_v().values():
             if node.get_position() == ():
@@ -226,15 +229,17 @@ class GraphAlgo(GraphAlgoInterface):
             x = node.get_position()[0]
             y = node.get_position()[1]
             plt.plot(x, y, '-o')
-            plt.annotate(str(node.get_key()), [x, y+0.025])
+            ax.annotate(str(node.get_key()), [x, y])
             for ni in self._graph.all_out_edges_of_node(node.get_key()).keys():
                 tmp_node = self._graph.get_node(ni)
                 x2 = tmp_node.get_position()[0]
                 y2 = tmp_node.get_position()[1]
-                plt.arrow(x, y, -(x-x2), -(y-y2), **arrow_parameters)
+                con = ConnectionPatch((x, y), (x2, y2), "data", "data", arrowstyle="-|>", shrinkA=5, shrinkB=4,
+                                      mutation_scale=19, alpha=0.75, fc="k")
+                ax.add_artist(con)
         plt.xlabel("x label")
         plt.ylabel("y label")
-        plt.title("Weighted Directed Graph")
+        plt.title("Nodes: " + str(self._graph.v_size()) + "  Edges: " +  str(self._graph.e_size()))
         plt.show()
 
     def reset_graph(self) -> None:

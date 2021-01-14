@@ -115,6 +115,7 @@ Implemented in `mainTestGraph()` and `mainTestGraphAlg()` accordingly
 - https://www.youtube.com/watch?v=wUgWX0nc4NY
 
 ### Matplotlib
+- https://matplotlib.org/3.1.1/gallery/userdemo/connect_simple01.html#sphx-glr-gallery-userdemo-connect-simple01-py
 - https://matplotlib.org/3.3.3/gallery/text_labels_and_annotations/arrow_demo.html#sphx-glr-gallery-text-labels-and-annotations-arrow-demo-py
 - https://stackoverflow.com/questions/19633336/using-numbers-as-matplotlib-plot-markers
 

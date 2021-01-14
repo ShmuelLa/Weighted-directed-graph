@@ -70,6 +70,8 @@ class DiGraph(GraphInterface):
         """
         if id1 == id2 or weight < 0 or self._nodes.get(id1).has_neighbor(id2):
             return False
+        if self._nodes.get(id1).has_neighbor(id2):
+            return False
         elif self._nodes.__contains__(id1) and self._nodes.__contains__(id2):
             self._nodes.get(id1).connect_outgoing_edge(id2, weight)
             self._nodes.get(id2).connect_incoming_edge(id1, weight)
