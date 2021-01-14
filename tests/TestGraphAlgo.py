@@ -76,7 +76,6 @@ class TestDiGraph(unittest.TestCase):
         red.add_edge(0, 2, 5)
         galred = GraphAlgo(red)
         print(galred.connected_components())
-        print(galred.gidi2())
 
     def test_single_scc(self):
         g1 = main_test_graph()
@@ -95,12 +94,6 @@ class TestDiGraph(unittest.TestCase):
         time2 = int(round(time.time() * 1000))
         print((time2 - time1) / 1000)
 
-        time1 = int(round(time.time() * 1000))
-        ga.gidi2()
-        time2 = int(round(time.time() * 1000))
-        print((time2 - time1) / 1000)
-
 
 if __name__ == '__main__':
     unittest.main()
-
