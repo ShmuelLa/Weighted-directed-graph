@@ -1,4 +1,7 @@
+import json
 import unittest
+import random
+
 from src.DiGraph import DiGraph
 from src.NodeData import NodeData
 
@@ -90,6 +93,26 @@ class TestDiGraph(unittest.TestCase):
         g2.add_edge(3, 5, 7)
         g2.add_edge(5, 3, 3)  # changes just the weight
         self.assertNotEqual(g1, g2)
+
+    def test_5(self):
+        graph = DiGraph()
+        random.seed(8, 1)
+        for i in range(0, 10):
+            graph.add_node(i)
+        for i in range(2, 6):
+            graph.add_edge(0, i, i - 1.5)
+        for j in graph.all_out_edges_of_node(0):
+            self.assertEqual(j - 1.5, graph.all_out_edges_of_node(0).get(j))
+
+    def test_6(self):
+        graph = DiGraph()
+        self.assertFalse(graph.add_edge(1, 2, 4))
+        graph.add_node(1)
+        self.assertFalse(graph.add_edge(0, 1, 41))
+        self.assertFalse(graph.add_edge(1, 1, 2))
+        graph.add_node(2)
+        self.assertTrue(graph.add_edge(1, 2, 4))
+        self.assertEqual(4, graph.all_out_edges_of_node(1).get(2))
 
 
 if __name__ == '__main__':

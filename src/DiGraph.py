@@ -48,7 +48,10 @@ class DiGraph(GraphInterface):
         """return a dictionary of all the nodes connected from node_id , each node is represented using a pair
         (other_node_id, weight)
         """
-        return self._nodes.get(id1).get_outgoing_neighbors()
+        if self._nodes.__contains__(id1):
+            return self._nodes.get(id1).get_outgoing_neighbors()
+        else:
+            return {}
 
     def get_mc(self) -> int:
         """
@@ -68,6 +71,8 @@ class DiGraph(GraphInterface):
         @param weight: The weight of the edge
         @return: True if the edge was added successfully, False o.w.
         """
+        if not self._nodes.__contains__(id1) or not self._nodes.__contains__(id2):
+            return False
         if id1 == id2 or weight < 0 or self._nodes.get(id1).has_neighbor(id2):
             return False
         if self._nodes.get(id1).has_neighbor(id2):
@@ -101,10 +106,10 @@ class DiGraph(GraphInterface):
     def remove_node(self, node_id: int) -> bool:
         """
         Removes a node from the graph.
+        Note: if the node id does not exists the function will do nothing
+
         @param node_id: The node ID
         @return: True if the node was removed successfully, False o.w.
-
-        Note: if the node id does not exists the function will do nothing
         """
         if self._nodes.__contains__(node_id):
             for key_in in list(self.all_in_edges_of_node(node_id).keys()):
@@ -118,6 +123,7 @@ class DiGraph(GraphInterface):
                 self._mode_count += 1
                 self._edge_size -= 1
             self._nodes.pop(node_id)
+            self._mode_count += 1
             return True
         else:
             return False
