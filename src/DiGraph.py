@@ -1,12 +1,11 @@
-from json import JSONEncoder
 from src.GraphInterface import GraphInterface
 from src.NodeData import NodeData
-import json
 
 
 class DiGraph(GraphInterface):
     """
-    This class represents a Directed Weighted Graph
+    This class represents a Directed Weighted Graph it is based heavily on the NodeData object
+
     """
 
     def __init__(self):
@@ -62,15 +61,16 @@ class DiGraph(GraphInterface):
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
         """
         Adds an edge to the graph.
+        Note: If the edge already exists or one of the nodes dose not exists the functions will do nothing
+
         @param id1: The start node of the edge
         @param id2: The end node of the edge
         @param weight: The weight of the edge
         @return: True if the edge was added successfully, False o.w.
-
-        Note: If the edge already exists or one of the nodes dose not exists the functions will do nothing
-        :rtype: object
         """
         if id1 == id2 or weight < 0 or self._nodes.get(id1).has_neighbor(id2):
+            return False
+        if self._nodes.get(id1).has_neighbor(id2):
             return False
         elif self._nodes.__contains__(id1) and self._nodes.__contains__(id2):
             self._nodes.get(id1).connect_outgoing_edge(id2, weight)
@@ -125,11 +125,11 @@ class DiGraph(GraphInterface):
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
         """
         Removes an edge from the graph.
+        Note: If such an edge does not exists the function will do nothing
+
         @param node_id1: The start node of the edge
         @param node_id2: The end node of the edge
         @return: True if the edge was removed successfully, False o.w.
-
-        Note: If such an edge does not exists the function will do nothing
         """
         if node_id1 != node_id2 and self._nodes.__contains__(node_id1) and self._nodes.__contains__(node_id1):
             if self._nodes.get(node_id1).remove_outgoing_edge(node_id2) and \
@@ -142,7 +142,12 @@ class DiGraph(GraphInterface):
         else:
             return False
 
-    def to_json(self):
+    def to_json(self) -> str:
+        """
+        Returns a string representation of the graph in json format
+
+        :return: string in json format of the graph
+        """
         nodes = "],\"Nodes\":["
         edges = "{\"Edges\":["
         for k, v in self._nodes.items():
@@ -157,7 +162,14 @@ class DiGraph(GraphInterface):
                 edges += "{\"src\":" + str(e) + "," + "\"w\":" + str(w) + "," + "\"dest\":" + str(k) + "},"
         return edges[:-1] + nodes[:-1] + "]}"
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
+        """
+        overwrites the equality check of graph to check if two different graph objects are equal
+        This method checks all the graph aspects and used mainly for testing
+
+        :param other: DiGraph to check
+        :return: True if equals False otherwise
+        """
         for node, node_obj in self.get_all_v().items():
             if other.get_all_v().__contains__(node):
                 if str(other.get_node(node)) != str(node_obj):
@@ -173,15 +185,26 @@ class DiGraph(GraphInterface):
         return True
 
     def has_node(self, node: int) -> bool:
+        """
+        Checks if this graph contains the node by the given ID
+        :param node: node id to check
+        :return: True if exists False otherwise
+        """
         return self._nodes.__contains__(node)
 
     def get_node(self, node: int) -> NodeData:
+        """
+        Returns the node by the ID
+
+        :param node: node ID to return
+        :return: the NodeData object by the ID
+        """
         if self._nodes.__contains__(node):
             return self._nodes.get(node)
 
-    def __str__(self):
+    def __str__(self) -> str:
         """
-        Printouts the graph, format examplt: Graph: |V|=4 , |E|=5
+        Printouts the graph, format example: Graph: |V|=4 , |E|=5
 
         :return: str representation of the graph
         """
