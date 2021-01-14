@@ -149,8 +149,8 @@ class DiGraph(GraphInterface):
             if v.get_position() == ():
                 nodes += "{\"id\":" + str(k) + "},"
             else:
-                nodes += "{\"pos\":\"" + str(self._position[0]) + "," + str(self._position[1]) + ","\
-                   + str(self._position[2]) + "\"," + "\"id\":" + str(self._key) + "},"
+                nodes += "{\"pos\":\"" + str(v.get_position()[0]) + "," + str(v.get_position()[1]) + ","\
+                   + str(v.get_position()[2]) + "\"," + "\"id\":" + str(v.get_key()) + "},"
             for e, w in v.get_outgoing_neighbors().items():
                 edges += "{\"src\":" + str(k) + "," + "\"w\":" + str(w) + "," + "\"dest\":" + str(e) + "},"
             for e, w in v.get_incoming_neighbors().items():
@@ -178,3 +178,11 @@ class DiGraph(GraphInterface):
     def get_node(self, node: int) -> NodeData:
         if self._nodes.__contains__(node):
             return self._nodes.get(node)
+
+    def __str__(self):
+        """
+        Printouts the graph, format examplt: Graph: |V|=4 , |E|=5
+
+        :return: str representation of the graph
+        """
+        return "Graph: |V|=" + str(self.v_size()) + " , |E|=" + str(self._edge_size)

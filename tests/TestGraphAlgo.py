@@ -87,8 +87,18 @@ class TestDiGraph(unittest.TestCase):
     def test_big_scc(self):
         g1 = main_test_graph()
         ga = GraphAlgo(g1)
+
         ga.load_from_json("..\data\Graphs_on_circle\G_30000_240000_1.json")
+
+        time1 = int(round(time.time() * 1000))
         ga.connected_components()
+        time2 = int(round(time.time() * 1000))
+        print((time2 - time1) / 1000)
+
+        time1 = int(round(time.time() * 1000))
+        ga.gidi2()
+        time2 = int(round(time.time() * 1000))
+        print((time2 - time1) / 1000)
 
 
 if __name__ == '__main__':

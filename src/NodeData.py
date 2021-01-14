@@ -1,6 +1,3 @@
-from json import JSONEncoder
-import random
-
 class NodeData:
 
     def __init__(self, node_id: int):
@@ -145,3 +142,12 @@ class NodeData:
 
     def __gt__(self, other):
         return self.get_tag() > other.get_tag()
+
+    def __repr__(self):
+        """
+        Returns output, format example: "0: |edges out| 1 |edges in| 1"
+
+        :return: String representation of the node
+        """
+        return str(self._key) + ": |edges out| " + \
+               str(self._neighbors_out.__len__()) + " |edges in| " + str(self._neighbors_in.__len__())
