@@ -2,20 +2,45 @@
 
 # :mortar_board: Weighted Directed Graph Python Implementation
 
-An implementation of a Weighted graph in java.  
-This project implements three different interfaces introduced in our assignment:  
+An implementation of a Weighted Directed graph in Python  
+This project in implemented in three different files:  
   
-- **weighted_graph** (implemented by **WGraph_DS**) - an object representing a graph tha points to all of its containing nodes  
-    - **node_info** (implemented by **NodeInfo**) - an object representing each individual node/vertex in the graph, in this assignment it will be implemented internally  
-- **weighted_graph_algorithms** (implemented by **WGraph_Algo**) - an object that implements some basic graph algorithms  
-  
-- Our main data structure of choice is a **HashMap** that is used to store every node in the graph and also used to 
-implement weighted graph main mechanism, the weighted edges via the **EdgeInfo** object. 
-  
-- The main reasons we chose HashMap is because of the high efficiency for our project.  
-For example the efficient `put()`, `get()` and `contains()` are all O(1) and most importantly the `values()` and `keyset()` methods that  
-returns a **Collection** view of all the values/keys contained in this map accordingly. The `values()` and `keyset()` are perfect for the implementation  
-of our `getV()` methods which are used in almost every algorithm and iteration in this project.  
+- **DiGraph** - an object representing a graph tha points to all of its containing nodes  
+- **NodeData** - an object representing each individual node/vertex in the graph, Each and every vertex hold the information about he's neighbors and edges 
+- **GraphAlgo** - an object that implements some basic graph algorithms
+- **Comparisons** - a combination of functions that run our project (+ Former Java Ex2) vs. Networkx and compares running time  
+
+![alt text](resources/myplot1.png)
+
+## Time Comparisons (Part 3)
+
+![alt text](resources/myplot.png)
+
+In **Comparisons** we run 6 different graphs from the `data/Graphs_on_circle` folder and compare the running time between on three different projects:
+- `Networkx`: https://networkx.org/documentation/stable/tutorial.html
+- Our former `Ex2 Java` project: https://github.com/ShmuelLa/OOP_ex2
+- This repositor 
+
+Because the running time on the small graphs in too small we compared the projects on the biggest graph - `G_30000_240000`
+
+## Main Algorithms Used
+
+### Strongly Connected Components:
+![alt text](resources/scc.png)
+An SCC is a component in a graph that contains noded which can reach each other form any direction.
+For our SCC algorithm we used a former BFS we used in the previous exam which runs from a node to all of it's neighbors, transposes the graph and checks the directions again.
+This time we added a feature to the result of that algorithm that will return the intersection of the two paths the BFS went through.
+Than we wrote another function which calss the BFS algorithm for each and every "unvisited"  node (Means that the node itself still doesn't have an SCC).   
+>> Note: at firsts we implemented and used Tarjan's algorithm with recursive DFS but because of the big graphs we needed to run we reached max recursion depth and after increasing it we reached a Stack Overflow error. so we used a more "simple" algorithm
+
+### Dijkstra Algorithm:
+A searching algorithm. in this version of Dijkstra we use a Priority que, that is because we are "traveling" across a Weighted
+graph. by using a Priority que(heapq) we can pull the lowest weighted node out with each iteration.
+we start by marking our current node as visited (use the node info -"y"), then we travel trough the graph in using BFS algorithm.
+each node we come across we first mark the distance as ("inf")-positive infinity, then we calculate the actual distance
+and if it's lower than ("inf") we set the nodes weight to that value. next we make a dict of all parents and children.
+when all the nodes are visited we backtrack across the parent dict, adding  each node to a list
+then return it. with the destination node weight. finally, we reset the graph - marking each node's tag to 0 and each info to "".  
   
 ## :computer: Main Classes and Methods  
   
@@ -104,9 +129,6 @@ Including Dijkstra, BFS. We ran run time tests, with our previous project in Jav
 ### Dijkstra's Algorithm
 - https://www.coursera.org/lecture/advanced-data-structures/core-dijkstras-algorithm-2ctyF
 - https://en.wikipedia.org/wiki/Shortest_path_problem
-
-### Connected Components - Tarjan's
-- https://www.youtube.com/watch?v=wUgWX0nc4NY
 
 ### Matplotlib
 - https://matplotlib.org/3.1.1/gallery/userdemo/connect_simple01.html#sphx-glr-gallery-userdemo-connect-simple01-py
